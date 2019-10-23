@@ -1,4 +1,5 @@
-FROM manorrock/openjdk
+FROM manorrock/zulu:arm32v6
+RUN ["cross-build-start"]
 ENV TOMCAT_VERSION=9.0.27
 RUN apt-get update && \
     apt-get install -y curl unzip && \
@@ -12,3 +13,4 @@ RUN apt-get update && \
 CMD /usr/local/tomcat${TOMCAT_VERSION}/bin/catalina.sh run
 EXPOSE 8080
 WORKDIR /mnt
+RUN ["cross-build-end"]
