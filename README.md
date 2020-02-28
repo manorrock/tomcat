@@ -2,7 +2,7 @@
 
 ## Important
 
-This repository has been deprecated. For official Jetty images go to 
+This repository has been deprecated. For official Tomcat images go to 
 [Docker Hub](https://hub.docker.com/_/tomcat).
 
 ## Run Tomcat on port 8080
