@@ -1,4 +1,4 @@
-# A dockerizd Apache Tomcat
+# A dockerized Apache Tomcat
 
 ## Run Tomcat on port 8080
 
