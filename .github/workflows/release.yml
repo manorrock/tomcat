@@ -21,6 +21,13 @@ jobs:
         VERSION=${TAG:${#INDEX}+1}
         docker build -f Dockerfile.amd64 -t manorrock/tomcat:amd64-$VERSION .
         docker push manorrock/tomcat:amd64-$VERSION
+    - name: Build arm32v6 image
+      run: |
+        TAG=${GITHUB_REF}
+        INDEX=${TAG%v*}
+        VERSION=${TAG:${#INDEX}+1}
+        docker build -f Dockerfile.arm32v6 -t manorrock/tomcat:arm32v6-$VERSION .
+        docker push manorrock/tomcat:arm32v6-$VERSION
     - name: Push Docker manifest
       run: |
         TAG=${GITHUB_REF}
@@ -28,7 +35,10 @@ jobs:
         VERSION=${TAG:${#INDEX}+1}
         export DOCKER_CLI_EXPERIMENTAL=enabled
         docker manifest create manorrock/tomcat:$VERSION \
-          manorrock/tomcat:amd64-$VERSION
+          manorrock/tomcat:amd64-$VERSION \
+          manorrock/tomcat:arm32v6-$VERSION
         docker manifest annotate manorrock/tomcat:$VERSION \
           manorrock/tomcat:amd64-$VERSION --os linux --arch amd64
+        docker manifest annotate manorrock/tomcat:$VERSION \
+          manorrock/tomcat:arm32v6-$VERSION --os linux --arch arm
         docker manifest push manorrock/tomcat:$VERSION

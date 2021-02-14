@@ -17,11 +17,18 @@ jobs:
       run: |
         docker build -f Dockerfile.amd64 -t manorrock/tomcat:amd64-latest .
         docker push manorrock/tomcat:amd64-latest
+    - name: Build arm32v6 image
+      run: |
+        docker build -f Dockerfile.arm32v6 -t manorrock/tomcat:arm32v6-latest .
+        docker push manorrock/tomcat:arm32v6-latest
     - name: Push Docker manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
         docker manifest create manorrock/tomcat:latest \
-          manorrock/tomcat:amd64-latest
+          manorrock/tomcat:amd64-latest \
+          manorrock/tomcat:arm32v6-latest
         docker manifest annotate manorrock/tomcat:latest \
           manorrock/tomcat:amd64-latest --os linux --arch amd64
+        docker manifest annotate manorrock/tomcat:latest \
+          manorrock/tomcat:arm32v6-latest --os linux --arch arm
         docker manifest push manorrock/tomcat:latest
