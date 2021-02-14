@@ -1,4 +1,4 @@
-# Tomcat
+# A dockerizd Apache Tomcat
 
 ## Run Tomcat on port 8080
 
