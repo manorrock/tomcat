@@ -1,0 +1,27 @@
+name: build
+on: 
+  push:
+    branches:
+      - 'master'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to Docker Hub
+      uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: Build amd64 image
+      run: |
+        docker build -f Dockerfile.amd64 -t manorrock/tomcat:amd64-latest .
+        docker push manorrock/tomcat:amd64-latest
+    - name: Push Docker manifest
+      run: |
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        docker manifest create manorrock/tomcat:latest \
+          manorrock/tomcat:amd64-latest
+        docker manifest annotate manorrock/tomcat:latest \
+          manorrock/tomcat:amd64-latest --os linux --arch amd64
+        docker manifest push manorrock/tomcat:latest
